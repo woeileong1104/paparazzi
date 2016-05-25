@@ -14,6 +14,7 @@
    name="Bebop"
    ac_id="151"
    airframe="airframes/CDW/cdw_bebop.xml"
+   parameters="parameters/TUDELFT/bebop5.xml"
    radio="radios/dummy.xml"
    telemetry="telemetry/default_rotorcraft.xml"
    flight_plan="flight_plans/TUDELFT/tudelft_rotorcraft_survey_delft.xml"
