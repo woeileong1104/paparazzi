@@ -185,6 +185,7 @@
    settings="settings/rotorcraft_basic.xml settings/control/stabilization_att_int.xml settings/control/rotorcraft_guidance.xml"
    settings_modules="modules/imu_common.xml modules/gps.xml modules/ahrs_int_cmpl_quat.xml modules/geo_mag.xml modules/air_data.xml modules/gps_ubx_ucenter.xml"
    gui_color="#ffffdffac31f"
+   release="0fba1ce80a46d8dce23c570e6547595c89988fad"
   />
   <aircraft
    name="MAVTec1_Kirk"
@@ -251,6 +252,7 @@
    settings="settings/fixedwing_basic.xml settings/control/ctl_energy.xml settings/estimation/ac_char.xml"
    settings_modules="modules/imu_common.xml modules/ahrs_int_cmpl_quat.xml modules/gps.xml modules/air_data.xml modules/geo_mag.xml modules/gps_ubx_ucenter.xml modules/light.xml modules/digital_cam.xml"
    gui_color="white"
+   release="7cf84458f9e2c7273215dfab122792d5e5813304"
   />
   <aircraft
    name="Outback"
@@ -262,6 +264,7 @@
    settings="settings/rotorcraft_basic.xml settings/control/stabilization_att_int.xml settings/control/rotorcraft_guidance.xml settings/control/stabilization_rate.xml"
    settings_modules="modules/imu_common.xml modules/gps.xml modules/ahrs_int_cmpl_quat.xml modules/opa_controller.xml modules/air_data.xml modules/temp_adc.xml modules/logger_sd_spi_direct.xml modules/gps_ubx_ucenter.xml"
    gui_color="#ffffdffac31f"
+   release="9bc8728ed9e59bd9924201752f40b6797b0b8ea4"
   />
   <aircraft
    name="Quad_Navstik"
