@@ -38,7 +38,7 @@
      settings="settings/rotorcraft_basic.xml settings/control/rotorcraft_guidance.xml settings/control/stabilization_att_int.xml settings/control/stabilization_rate.xml"
 -->
 
-<airframe name="flowerfly_v3_SDLog">
+<airframe name="flowerfly_v3_2">
 
   <servos driver="Pwm">
     <servo name="motor"    no="0" min="1000" neutral="1000" max="2000"/>
@@ -204,9 +204,9 @@
     <module name="gps" type="ubx_ucenter"/>
     <module name="send_imu_mag_current"/>
     <module name="logger_sd_spi_direct">
-      <define name="SDLOGGER_ON_ARM" value="TRUE"/>
-      <!--configure name="LOGGER_CONTROL_SWITCH" value="RADIO_FLAP"/-->
-      <!--configure name="LOGGER_LED" value="3"/-->
+      <define name="SDLOGGER_ON_ARM" value="TRUE">
+      <!--configure name="LOGGER_CONTROL_SWITCH" value="RADIO_AUX2"/>
+      <configure name="LOGGER_LED" value="3"/-->
     </module>
   </modules>
 
