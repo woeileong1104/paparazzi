@@ -156,6 +156,7 @@
       <message name="IMU_MAG_SCALED"         period=".1"/>
       <message name="AHRS_GYRO_BIAS_INT"     period=".02"/>
       <message name="AHRS_EULER_INT"         period=".02"/>
+      <message name="BARO_RAW"               period=".1"/>
     </mode>
   </process>
 
