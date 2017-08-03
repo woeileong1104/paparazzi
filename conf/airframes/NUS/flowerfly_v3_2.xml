@@ -135,9 +135,9 @@
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
 
     <!-- setpoints -->
-    <define name="SP_MAX_PHI"   value="60."  unit="deg"  />
-    <define name="SP_MAX_THETA" value="60."  unit="deg"  />
-    <define name="SP_MAX_PSI"   value="180." unit="deg"  />
+    <define name="SP_MAX_PHI"   value="20."  unit="deg"  />
+    <define name="SP_MAX_THETA" value="20."  unit="deg"  />
+    <define name="SP_MAX_PSI"   value="20." unit="deg"  />
     <define name="SP_MAX_R"     value="90."  unit="deg/s"/>
     <define name="SP_MAX_P"     value="90."  unit="deg/s"/>
     <define name="DEADBAND_R"   value="250"              />

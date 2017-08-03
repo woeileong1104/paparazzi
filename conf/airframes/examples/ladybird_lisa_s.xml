@@ -196,9 +196,9 @@
              airframe file uncomment the following three lines and set the
              correct values based on the output of the superbitrf telemetry
              messages. -->
-        <!--define name="RADIO_TRANSMITTER_ID" value="1335259868"/--> <!-- Esden (1BitSquared) Dx6i: TX 1 -->
-        <!--define name="RADIO_TRANSMITTER_CHAN" value="6"/-->
-        <!--define name="RADIO_TRANSMITTER_PROTOCOL" value="0x01"/-->
+        <define name="RADIO_TRANSMITTER_ID" value="0x939D687B"/> <!-- TL NUS Dx6i #2 Model Name: LISAS02 --> 
+        <define name="RADIO_TRANSMITTER_CHAN" value="0x06"/>
+        <define name="RADIO_TRANSMITTER_PROTOCOL" value="0x01"/>
         <define name="RADIO_MODE" value="RADIO_FLAP"/>
         <define name="RADIO_KILL_SWITCH" value="RADIO_GEAR"/>
       </module>
@@ -225,10 +225,15 @@
       <define name="USE_SERVOS_1AND2"/>
     </module>
 
-    <module name="telemetry" type="superbitrf"/>
+    <!--module name="telemetry" type="superbitrf"/-->
     <!-- Comment the previous line and uncomment the following one if you need
          to use the debug serial interface for telemetry. -->
     <!--module name="telemetry" type="transparent"/-->
+    <module name="telemetry" type="transparent">
+      <configure name="MODEM_BAUD" value="B115200"/>
+      <configure name="MODEM_PORT" value="UART1"/>
+    </module>
+
     <module name="imu" type="lisa_s_v1.0">
       <define name="LISA_S_UPSIDE_DOWN"/> <!-- Upside down is a relative term. :) -->
     </module>
