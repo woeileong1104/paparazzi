@@ -13,12 +13,12 @@
   <aircraft
    name="LadyLisa"
    ac_id="6"
-   airframe="airframes/examples/ladybird_lisa_s.xml"
-   radio="radios/cockpitSX.xml"
+   airframe="airframes/NUS/ladybird_lisa_s.xml"
+   radio="radios/FlyElectricRx31_DX6.xml"
    telemetry="telemetry/default_rotorcraft.xml"
    flight_plan="flight_plans/rotorcraft_basic.xml"
-   settings="settings/rotorcraft_basic.xml settings/control/rotorcraft_guidance.xml settings/control/stabilization_att_int.xml settings/superbitrf.xml settings/nps.xml"
-   gui_color="white"
+   settings="settings/rotorcraft_basic.xml settings/control/rotorcraft_guidance.xml settings/control/stabilization_att_int.xml settings/nps.xml"
    settings_modules="modules/gps_ubx_ucenter.xml modules/imu_common.xml modules/gps.xml modules/ahrs_int_cmpl_quat.xml"
+   gui_color="white"
   />
 </conf>
