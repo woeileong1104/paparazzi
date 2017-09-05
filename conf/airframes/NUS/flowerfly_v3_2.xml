@@ -40,11 +40,16 @@
 
 <airframe name="flowerfly_v3_2">
 
+<!--
+     no                 ="0"|"1"|"2"|"3"|"4"|"5"
+     No. on Lisa/S boad = 3 | 4 | 5 | 6 | 1 | 2
+-->
+
   <servos driver="Pwm">
     <servo name="motor"    no="0" min="1000" neutral="1000" max="2000"/>
     <servo name="rudder"   no="1" min="2000" neutral="1500" max="1000"/>
     <servo name="elevator" no="2" min="2000" neutral="1700" max="1000"/>
-    <servo name="aileron"  no="3" min="1000" neutral="1500" max="2000"/>
+    <servo name="aileron"  no="4" min="1000" neutral="1500" max="2000"/>
   </servos>
 
   <commands>
@@ -76,7 +81,7 @@
   
   <section name="IMU" prefix="IMU_">
     <define name="BODY_TO_IMU_PHI"   value="180." unit="deg"/>
-    <define name="BODY_TO_IMU_THETA" value="267." unit="deg"/>
+    <define name="BODY_TO_IMU_THETA" value="253.6" unit="deg"/>
     <define name="BODY_TO_IMU_PSI"   value="0."   unit="deg"/>
 
     <define name="ACCEL_X_NEUTRAL" value="0"/>
@@ -101,8 +106,8 @@
    <define name="MODE_STARTUP" value="AP_MODE_RC_DIRECT"      />
    <define name="MODE_MANUAL"  value="AP_MODE_RC_DIRECT"      />
    <define name="MODE_AUTO1"   value="AP_MODE_ATTITUDE_DIRECT"/>
-   <define name="MODE_AUTO2"   value="AP_MODE_ATTITUDE_Z_HOLD"/>
-   <!--define name="MODE_AUTO2" value="AP_MODE_ATTITUDE_DIRECT"/-->   
+   <!--define name="MODE_AUTO2"   value="AP_MODE_ATTITUDE_Z_HOLD"/-->
+   <define name="MODE_AUTO2"   value="AP_MODE_ATTITUDE_DIRECT"/>   
    <!--define name="MODE_AUTO2" value="AP_MODE_NAV"/-->
  </section>
 
@@ -156,22 +161,22 @@
     <define name="REF_MAX_RDOT" value="RadOfDeg(900.)"   />
 
     <!-- feedback -->
-    <define name="PHI_PGAIN" value="2000"/>
-    <define name="PHI_DGAIN" value="800" />
-    <define name="PHI_IGAIN" value="100" />
+    <define name="PHI_PGAIN" value="1500"/>
+    <define name="PHI_DGAIN" value="300" />
+    <define name="PHI_IGAIN" value="0" />
 
-    <define name="THETA_PGAIN" value="2000"/>
-    <define name="THETA_DGAIN" value="800" />
-    <define name="THETA_IGAIN" value="100" />
+    <define name="THETA_PGAIN" value="1500"/>
+    <define name="THETA_DGAIN" value="300" />
+    <define name="THETA_IGAIN" value="0" />
 
-    <define name="PSI_PGAIN" value="2000"/>
-    <define name="PSI_DGAIN" value="1500"/>
-    <define name="PSI_IGAIN" value="10"  />
+    <define name="PSI_PGAIN" value="1200"/>
+    <define name="PSI_DGAIN" value="0"/>
+    <define name="PSI_IGAIN" value="0"  />
 
     <!-- feedforward -->
     <define name="PHI_DDGAIN"   value="0"  />
     <define name="THETA_DDGAIN" value="0"  />
-    <define name="PSI_DDGAIN"   value="300"/>
+    <define name="PSI_DDGAIN"   value="0"/>
 
     <define name="PHI_AGAIN"   value="0"/>
     <define name="THETA_AGAIN" value="0"/>
@@ -235,7 +240,7 @@
       </subsystem>
 
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="500"/>  
-      <define name="USE_PERSISTENT_SETTINGS" value="TRUE"/>          
+      <define name="USE_PERSISTENT_SETTINGS" value="FALSE"/>          
     </target>
 
     <subsystem name="actuators" type="pwm">
