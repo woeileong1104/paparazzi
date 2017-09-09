@@ -68,12 +68,12 @@ uint8_t droplet_active;
 
 void droplet_init(void)
 {
-  obst_thr_1 = 25;//7;      // obstacle threshold for phase 1
+  obst_thr_1 = 75;//7;      // obstacle threshold for phase 1
   disp_thr_1 = 10;     // obstacle count minimum threshold for phase 1
-  obst_wait_2 = 1800;  // -->1800<-- wait time for phase 2
-  obst_thr_3 = 25;     // obstacle threshold for phase 3
-  obst_thr_4 = 25;     // obstacle threshold for phase 4
-  obst_wait_4 = 500;   // wait time for phase 4
+  obst_wait_2 = 1000;  // -->1800<-- wait time for phase 2
+  obst_thr_3 = 75;     // obstacle threshold for phase 3
+  obst_thr_4 = 75;     // obstacle threshold for phase 4
+  obst_wait_4 = 1;   // wait time for phase 4
 
   obst_cons_1 = 3;     // obstacle consistency threshold for phase 1
   obst_cons_3 = 1;     // no-obstacle consistency threshold for phase 3

@@ -51,6 +51,8 @@ extern void ppm_arch_init(void);
 #error "RADIO_CONTROL_NB_CHANNEL mustn't be higher than number of channels in radio file."
 #endif
 
+#define RADIO_THROTTLE_CLIMB 8
+
 /**
  *  ppm pulse type : futaba is falling edge clocked whereas JR is rising edge
  */

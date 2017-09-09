@@ -293,7 +293,7 @@ void stabilization_attitude_run(bool  in_flight)
 
   /* sum feedforward and feedback */
   stabilization_cmd[COMMAND_ROLL] =
-    OFFSET_AND_ROUND((stabilization_att_fb_cmd[COMMAND_ROLL] + stabilization_att_ff_cmd[COMMAND_ROLL]), CMD_SHIFT);
+    OFFSET_AND_ROUND((stabilization_att_fb_cmd[COMMAND_ROLL] + stabilization_att_ff_cmd[COMMAND_ROLL]), 8);
 
   stabilization_cmd[COMMAND_PITCH] =
     OFFSET_AND_ROUND((stabilization_att_fb_cmd[COMMAND_PITCH] + stabilization_att_ff_cmd[COMMAND_PITCH]), 8); // was 11 --> gains need to be 8 times smaller to have the same effect
