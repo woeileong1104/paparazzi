@@ -108,7 +108,7 @@ void stereo_to_state_cb(void)
   static float gate_time = 0;
   static uint8_t through_gate = 0;
 
-  if (radio_control.values[5] < 0){ // this should be ELEV D/R
+  if (radio_control.values[5] < 0){ // this is the flap switch on WoeiLeong's DX6i
     nus_switch = 0;
     nus_turn_cmd = 0;
   } else {

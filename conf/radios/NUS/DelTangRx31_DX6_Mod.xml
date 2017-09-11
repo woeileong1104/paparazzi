@@ -5,7 +5,7 @@
  <channel ctl="D" function="ROLL"     max="1200" neutral="1500" min="1800" average="0"/>
  <channel ctl="C" function="PITCH"    max="1200" neutral="1500" min="1800" average="0"/>
  <channel ctl="B" function="YAW"      max="1200" neutral="1500" min="1800" average="0"/>
- <channel ctl="G" function="MODE"     min="1200" neutral="1500" max="1800" average="1"/>
- <channel ctl="E" function="AUX2"     min="1200" neutral="1500" max="1800" average="1"/>
+ <channel ctl="G" function="AUX2"     min="1200" neutral="1500" max="1800" average="1"/>
+ <channel ctl="E" function="MODE"     min="1200" neutral="1500" max="1800" average="1"/>
  <channel ctl="F" function="FLAP"     min="1200" neutral="1500" max="1800" average="1"/>
 </radio>

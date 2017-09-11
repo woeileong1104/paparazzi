@@ -68,12 +68,12 @@ uint8_t droplet_active;
 
 void droplet_init(void)
 {
-  obst_thr_1 = 75;//7;      // obstacle threshold for phase 1
+  obst_thr_1 = 25;//7;      // obstacle threshold for phase 1
   disp_thr_1 = 10;     // obstacle count minimum threshold for phase 1
   obst_wait_2 = 1000;  // -->1800<-- wait time for phase 2
-  obst_thr_3 = 75;     // obstacle threshold for phase 3
-  obst_thr_4 = 75;     // obstacle threshold for phase 4
-  obst_wait_4 = 1;   // wait time for phase 4
+  obst_thr_3 = 25;     // obstacle threshold for phase 3
+  obst_thr_4 = 25;     // obstacle threshold for phase 4
+  obst_wait_4 = 500;   // wait time for phase 4
 
   obst_cons_1 = 3;     // obstacle consistency threshold for phase 1
   obst_cons_3 = 1;     // no-obstacle consistency threshold for phase 3
@@ -84,7 +84,7 @@ void droplet_init(void)
   obst_dect_4 = 0;     // counter for sequential obstacle detections in phase 4
   obst_time = 0;          // timer for phase 2 and 4
 
-  droplet_state = DROPLET_UNDEFINED;
+  droplet_state = DROPLET_UNOBSTRUCTED;
   prev_time = 0;
 
   // settings and controls
@@ -98,22 +98,25 @@ void droplet_init(void)
  */
 void droplet_periodic(void){
   if (!nus_switch){
-	  droplet_turn_direction = 1;	// reset turn direction when
-	  return;
+    nus_turn_cmd = 0;
+    droplet_turn_direction = 1;	// reset turn direction when
+    droplet_state = DROPLET_UNOBSTRUCTED;
+    return;
   }
   if (!droplet_active){return;}
 
   switch(droplet_state){
     case DROPLET_UNOBSTRUCTED:
       // go slight turn to follow wall
-      nus_turn_cmd = (int16_t)(wall_following_trim * droplet_turn_direction * MAX_PPRZ / STABILIZATION_ATTITUDE_SP_MAX_R);
+      //nus_turn_cmd = (int16_t)(wall_following_trim * droplet_turn_direction * MAX_PPRZ / STABILIZATION_ATTITUDE_SP_MAX_R);
+      nus_turn_cmd = 0;
       break;
     case DROPLET_WAIT_AFTER_DETECTION:
       nus_turn_cmd = 0; // go straight
       break;
     case DROPLET_AVOID:
       // avoid right with 1. rad/s
-      nus_turn_cmd =  1 * droplet_turn_direction * MAX_PPRZ / STABILIZATION_ATTITUDE_SP_MAX_R;
+      nus_turn_cmd =  1 * droplet_turn_direction * MAX_PPRZ / STABILIZATION_ATTITUDE_SP_MAX_R ; 
       break;
     case DROPLET_UNDEFINED:
       // go straight until we are sure there are no obstacles
@@ -151,6 +154,7 @@ void run_droplet(uint32_t disparities_total, uint32_t disparities_high)
   switch(droplet_state){
     case DROPLET_UNOBSTRUCTED: // DROPLET_UNOBSTRUCTED flight
       if (disparities_high > obst_thr_1 || disparities_total < disp_thr_1) { // if true, obstacle in sight
+      //if (disparities_high > obst_thr_1) { // if true, obstacle in sight
         obst_count_1++;
       } else if (obst_count_1 > 0) {
         obst_count_1--;
@@ -168,6 +172,7 @@ void run_droplet(uint32_t disparities_total, uint32_t disparities_high)
       break;
     case DROPLET_AVOID: // avoid
       if (disparities_high < obst_thr_3 && disparities_total > disp_thr_1) { // if true, flight direction is safe
+      //if (disparities_high < obst_thr_3) { // if true, flight direction is safe
         obst_free_3++;
       } else {
         obst_free_3 = 0;
@@ -181,6 +186,7 @@ void run_droplet(uint32_t disparities_total, uint32_t disparities_high)
       break;
     case DROPLET_UNDEFINED: // fly straight, but be aware of undetected obstacles
       if (disparities_high > obst_thr_4 || disparities_total < disp_thr_1) { // if true, obstacle in sight
+      //if (disparities_high > obst_thr_4) { // if true, obstacle in sight
         obst_dect_4++;
       } else {
         obst_dect_4 = 0;
