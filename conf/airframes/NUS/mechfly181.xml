@@ -205,10 +205,8 @@
     <load name="send_imu_mag_current.xml"/>
     <module name="logger_sd_spi_direct">
       <!--define name="SDLOGGER_ON_ARM" value="TRUE"/-->
-      <configure name="SDLOGGER_DIRECT_SPI" value="SPI1"/>
-      <configure name="SDLOGGER_DIRECT_SPI_SLAVE" value="SPI_SLAVE1"/>
-      <configure name="LOGGER_CONTROL_SWITCH" value="RADIO_AUX2"/>
-      <configure name="LOGGER_LED" value="3"/>
+      <configure name="LOGGER_CONTROL_SWITCH" value="RADIO_FLAP"/>
+      <!--configure name="LOGGER_LED" value="3"/-->
 </module>
   </modules>
 
