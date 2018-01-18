@@ -49,6 +49,8 @@
     <servo name="servoR" no="1" min="1000" neutral="1500" max="2000"/>
     <servo name="motorL" no="2" min="1000" neutral="1000" max="2000"/> 
     <servo name="servoL" no="4" min="1000" neutral="1500" max="2000"/>
+    <!--servo name="servoR" no="1" min="1000" neutral="1500" max="2000"/-->
+    <!--servo name="servoL" no="4" min="1000" neutral="1500" max="2000"/-->
   </servos>
 
   <commands>
@@ -60,10 +62,12 @@
 
   <command_laws>
     <!--call fun="motor_mixing_run(autopilot_motors_on,FALSE,values)"/-->
-    <set servo="motorR" value="@THRUST"/>
-    <set servo="motorL" value="@THRUST"/>    
-    <set servo="servoL" value="@PITCH" />
-    <set servo="servoR" value="@ROLL"  />
+    <set servo="motorR" value="@THRUST" />
+    <set servo="motorL" value="@THRUST" />    
+    <!--set servo="motorR" value="@THRUST*0.8 - @ROLL*0.2" /-->
+    <!--set servo="motorL" value="@THRUST*0.8 + @ROLL*0.2" /--> 
+    <set servo="servoL" value="@PITCH  - @YAW"  />
+    <set servo="servoR" value="-@YAW   - @PITCH"/>
   </command_laws>
 
   <!--section name="MIXING" prefix="MOTOR_MIXING_">
