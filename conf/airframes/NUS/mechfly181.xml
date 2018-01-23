@@ -63,7 +63,7 @@
   <command_laws>
     <!--call fun="motor_mixing_run(autopilot_motors_on,FALSE,values)"/-->
     <set servo="motorR" value="@THRUST" />
-    <set servo="motorL" value="@THRUST" />    
+    <set servo="motorL" value="@THRUST*1.3" />    
     <!--set servo="motorR" value="@THRUST*0.8 - @ROLL*0.2" /-->
     <!--set servo="motorL" value="@THRUST*0.8 + @ROLL*0.2" /--> 
     <set servo="servoL" value="@PITCH  - @YAW"  />
