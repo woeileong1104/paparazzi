@@ -1,0 +1,230 @@
+<airframe name="hummingbird_mxs_uwb"> <!--Stroke plane modualation-->
+
+  <servos driver="Pwm">
+    <servo name="rightmotor" no="0" min="1000" neutral="1000" max="2000"/> <!--Pad#3 on Lisa/-->
+    <servo name="leftmotor" no="1" min="1000" neutral="1000" max="2000"/> <!--Pad#4 on Lisa/-->
+    <!--servo name="rightservo" no="2" min="1495" neutral="1405" max="1260"/--> <!--Pad#5 on Lisa/-->
+    <!--servo name="leftservo" no="3" min="1550" neutral="1460" max="1305"/--> <!--Pad#6 on Lisa/-->
+    <servo name="rightservo" no="2" min="2000" neutral="1500" max="1000"/> <!--Pad#5 on Lisa/-->
+    <servo name="leftservo" no="3" min="2000" neutral="1500" max="1000"/> <!--Pad#6 on Lisa/-->
+  </servos>
+
+  <commands>
+    <axis name="PITCH" failsafe_value="0"/>
+    <axis name="ROLL" failsafe_value="0"/>
+    <axis name="YAW" failsafe_value="0"/>
+    <axis name="THRUST" failsafe_value="0"/>
+  </commands>
+
+  <command_laws>   
+    <set servo="leftmotor" value="@ROLL >= 0 ? 0.9*@THRUST+0.7*@ROLL : 0.9*@THRUST"/> 
+    <set servo="rightmotor" value="@ROLL <= 0 ? @THRUST-0.7*@ROLL : @THRUST"/> 
+    <set servo="leftservo" value="-@PITCH+@YAW"/>
+    <set servo="rightservo" value="@PITCH+@YAW"/>
+  </command_laws>
+
+
+  <!--define name="USE_BAROMETER" value="TRUE"/-->
+  
+  <section name="IMU" prefix="IMU_">
+    <!--define name="BODY_TO_IMU_PHI" value="0" unit="deg"/-->
+    <define name="BODY_TO_IMU_PHI" value="0." unit="deg"/>
+    <define name="BODY_TO_IMU_THETA" value="0." unit="deg"/>
+    <define name="BODY_TO_IMU_PSI" value="135." unit="deg"/>
+    <!--define name="BODY_TO_IMU_PSI" value="90" unit="deg"/-->
+
+    <define name="ACCEL_X_NEUTRAL" value="0"/>
+    <define name="ACCEL_Y_NEUTRAL" value="0"/>
+    <define name="ACCEL_Z_NEUTRAL" value="0"/>
+
+    <!-- MAGNETO CALIBRATION @ NUS -->
+    <define name="MAG_X_NEUTRAL" value="79"/>
+    <define name="MAG_Y_NEUTRAL" value="-217"/>
+    <define name="MAG_Z_NEUTRAL" value="-95"/>
+    <define name="MAG_X_SENS" value="3.69493568788" integer="16"/>
+    <define name="MAG_Y_SENS" value="3.95838211592" integer="16"/>
+    <define name="MAG_Z_SENS" value="4.20506427457" integer="16"/>
+  
+    <!-- MAGNETO CURRENT CALIBRATION -->
+    <define name="MAG_X_CURRENT_COEF" value="0.0103422023767"/>
+    <define name="MAG_Y_CURRENT_COEF" value="0.0084568317783"/>
+    <define name="MAG_Z_CURRENT_COEF" value="-0.01935617335"/>
+  </section>
+
+ <section name="AUTOPILOT">
+   <define name="MODE_STARTUP" value="AP_MODE_RC_DIRECT"/>
+   <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
+   <define name="MODE_AUTO1" value="AP_MODE_HOVER_Z_HOLD"/>
+   <define name="MODE_AUTO2" value="AP_MODE_NAV"/>
+   <!--define name="MODE_AUTO2" value="AP_MODE_NAV"/-->
+ </section>
+
+ <section name="BAT">
+   <define name="MILLIAMP_AT_FULL_THROTTLE" value="12000"/>
+   <define name="CATASTROPHIC_BAT_LEVEL" value="3.0" unit="V"/>
+   <define name="CRITIC_BAT_LEVEL" value="3.3" unit="V"/>
+    <define name="LOW_BAT_LEVEL" value="3.4" unit="V"/>
+    <define name="MAX_BAT_LEVEL" value="4.2" unit="V"/>
+ </section>
+
+  <section name="STABILIZATION_RATE" prefix="STABILIZATION_RATE_">
+    <define name="SP_MAX_P" value="180" unit="deg/s"/>
+    <define name="SP_MAX_Q" value="180" unit="deg/s"/>
+    <define name="SP_MAX_R" value="90" unit="deg/s"/>
+
+    <define name="GAIN_P" value="400"/>
+    <define name="GAIN_Q" value="400"/>
+    <define name="GAIN_R" value="418"/>
+
+    <define name="IGAIN_P" value="301"/>
+    <define name="IGAIN_Q" value="302"/>
+    <define name="IGAIN_R" value="303"/>
+  </section>
+
+
+  <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
+
+  <!--  SP_MAX_*: maximum PHI/THETA (roll/pitch) angles and maximum angular velocity R around yaw axis
+        DEADBAND_*: RC stick deadband around the center for A,E,R (roll,pitch,yaw)
+        REF_*: parameters for the reference generator
+        REF_OMEGA_*: second order model natural frequency for respective axis
+        REF_ZETA_*: second order model damping factor for respective axis
+        REF_MAX_x : bound on ref model angular speed
+        REF_MAX_xDOT : bound on ref model angular acceleration
+       [PHI|THETA|PSI]_[PID]GAIN: gains for the feedback control of the respective axis
+       [PHI|THETA|PSI]_DDGAIN: feedforward gains for the respective axis
+   -->
+
+    <!-- setpoints -->
+    <define name="SP_MAX_PHI" value="45." unit="deg"/> <!--Roll-->
+    <define name="SP_MAX_THETA" value="45." unit="deg"/> <!--Pitch-->
+    <define name="SP_MAX_PSI" value="90." unit="deg"/> <!--Yaw-->
+    <define name="SP_MAX_R" value="90." unit="deg/s"/> <!--Yaw-->
+    <define name="SP_MAX_P" value="90." unit="deg/s"/> <!--Roll-->
+    <define name="DEADBAND_A" value="250"/> <!--Roll-->
+    <!--define name="DEADBAND_E" value="250"/--> <!--Pitch-->
+    <define name="DEADBAND_R" value="250"/> <!--Yaw-->
+
+    <!-- reference -->
+    <define name="REF_OMEGA_P" value="800" unit="deg/s"/>
+    <define name="REF_ZETA_P" value="0.85"/>
+    <define name="REF_MAX_P" value="300." unit="deg/s"/>
+    <define name="REF_MAX_PDOT" value="RadOfDeg(7000.)"/>
+
+    <define name="REF_OMEGA_Q" value="800" unit="deg/s"/>
+    <define name="REF_ZETA_Q" value="0.85"/>
+    <define name="REF_MAX_Q" value="300." unit="deg/s"/>
+    <define name="REF_MAX_QDOT" value="RadOfDeg(7000.)"/>
+
+    <define name="REF_OMEGA_R" value="500" unit="deg/s"/>
+    <define name="REF_ZETA_R" value="0.85"/>
+    <define name="REF_MAX_R" value="180." unit="deg/s"/>
+    <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
+
+    <!-- feedback -->
+
+    <define name="PHI_PGAIN" value="1600"/> 
+    <define name="PHI_DGAIN" value="800"/> 
+    <define name="PHI_IGAIN" value="0"/> 
+
+    <define name="THETA_PGAIN" value="600"/> 
+    <define name="THETA_DGAIN" value="300"/> 
+    <define name="THETA_IGAIN" value="0"/> 
+
+    <define name="PSI_PGAIN" value="500"/>
+    <define name="PSI_DGAIN" value="2540"/>
+    <define name="PSI_IGAIN" value="0"/>
+
+    <!-- feedforward -->
+    <define name="PHI_DDGAIN" value="100"/>
+    <define name="THETA_DDGAIN" value="50"/>
+    <define name="PSI_DDGAIN" value="50"/>
+
+    <define name="PHI_AGAIN" value="0"/>
+    <define name="THETA_AGAIN" value="0"/>
+    <define name="PSI_AGAIN" value="0"/>
+ </section>
+
+  <section name="INS" prefix="INS_">
+  </section>
+
+ <section name="GUIDANCE_V" prefix="GUIDANCE_V_">
+   <define name="HOVER_KP" value="276"/>
+   <define name="HOVER_KD" value="455"/>
+   <define name="HOVER_KI" value="100"/>
+   <define name="GUIDANCE_V_NOMINAL_HOVER_THROTTLE" value="0.6"/>
+  </section>
+
+  <section name="AHRS" prefix="AHRS_">
+    <define name="H_X" value=" 0.47577"/>
+    <define name="H_Y" value=" 0.11811"/>
+    <define name="H_Z" value=" 0.87161"/>
+  </section>
+
+ <section name="GUIDANCE_H" prefix="GUIDANCE_H_">
+   <define name="PGAIN" value="39"/>
+   <define name="DGAIN" value="50"/>
+   <define name="IGAIN" value="19"/>
+ </section>
+
+  <section name="MISC">
+    <define name="VoltageOfAdc(adc)" value="(adc)*0.00162f" />
+  </section>
+ <modules main_freq="512">
+   <load name="gps_ubx_ucenter.xml"/>
+   <load name="send_imu_mag_current.xml"/>
+ </modules>
+
+ <!-- RPM Sensor -->
+ <modules name = "pwm_meas"/>
+ <modules name = "rpm_sensor"/>
+ <!--define name = "RPM_PWM_CHANNEL" value = "USE_PWM_INPUT1"/-->
+ <!--/module-->
+ <!-- RPM Sensor -->
+
+  <firmware name="rotorcraft">
+    <target name="ap" board="lisa_mxs_1.0">
+    
+      <define name="REMAP_UART3" value="TRUE" />
+
+      <module name="radio_control" type="ppm">
+        <configure name="RADIO_CONTROL_PPM_PIN" value="SERVO6"/>    
+      </module>
+
+      <define name="USE_PERSISTENT_SETTINGS" value="TRUE"/>
+    </target>
+
+    <module name="actuators" type="pwm">
+      <define name="SERVO_HZ" value="50"/>
+    </module>
+    
+    <module name="telemetry" type="transparent">
+      <configure name="MODEM_PORT" value="UART3"/>
+      <configure name="MODEM_BAUD" value="B115200"/>
+    </module>
+
+    <module name="imu" type="lisa_mx_v2.1"/>
+    
+    <module name="gps" type="ublox">
+      <configure name="GPS_PORT" value="UART2"/>
+      <configure name="GPS_BAUD" value="B38400"/>
+    </module>
+
+    <module name="stabilization" type="int_euler"/>
+
+    <define name="STABILIZATION_ATTITUDE_SP_PSI_DELTA_LIMIT" value="1.57"/>
+
+    <module name="ahrs" type="int_cmpl_quat">
+        <!--configure name="USE_MAGNETOMETER" value="FALSE"/>
+        <define name="AHRS_USE_GPS_HEADING" value="TRUE"/-->
+ 	<define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="0"/>
+	<define name="AHRS_PROPAGATE_LOW_PASS_RATES" value="TRUE"/>
+    </module>
+
+    <module name="ins"/>
+
+    <module name="air_data">
+      <define name="AIR_DATA_CALC_AMSL_BARO" value="TRUE"/>
+    </module>
+  </firmware>
+</airframe>
