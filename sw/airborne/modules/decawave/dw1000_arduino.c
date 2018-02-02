@@ -38,6 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "subsystems/datalink/telemetry.h" // added for telemetry of anchor range 20180202
 
 /** Number of anchors
  *
@@ -191,6 +192,14 @@ static void send_gps_dw1000_small(struct DW1000 *dw)
   AbiSendMsgGPS(GPS_DW1000_ID, now_ts, &(dw->gps_dw1000));
 }
 
+static void send_anchor_range(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_ANCHOR_RANGE(trans, dev, AC_ID,
+                               &dw1000.anchors[0].distance,
+                               &dw1000.anchors[1].distance,
+                               &dw1000.anchors[2].distance);
+}
+
 void dw1000_reset_heading_ref(void)
 {
   // store current heading as ref and stop periodic call
@@ -251,6 +260,7 @@ void dw1000_arduino_init()
   // init trilateration algorithm
   trilateration_init(dw1000.anchors);
 
+  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_ANCHOR_RANGE, send_anchor_range) ;
 }
 
 void dw1000_arduino_periodic()
@@ -309,5 +319,6 @@ void dw1000_arduino_event()
     }
   }
 }
+
 
 
