@@ -67,7 +67,7 @@
 
 /** default timeout (in ms) */
 #ifndef DW1000_TIMEOUT
-#define DW1000_TIMEOUT 500
+#define DW1000_TIMEOUT 1000 // originally 500, changed to 600 on 20180205 to accomodate LPS Mini
 #endif
 
 /** frame sync byte */
@@ -96,6 +96,7 @@ struct DW1000 {
 
 static struct DW1000 dw1000;
 
+uint8_t dw_status; // added for debug 20180205
 
 /** Utility function to get float from buffer */
 static inline float float_from_buf(uint8_t* b) {
@@ -200,6 +201,23 @@ static void send_anchor_range(struct transport_tx *trans, struct link_device *de
                                &dw1000.anchors[2].distance);
 }
 
+static void send_tag_position(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_TAG_POSITION(trans, dev, AC_ID,
+                               &dw1000.raw_pos.x,
+                               &dw1000.raw_pos.y,
+                               &dw1000.raw_pos.z,
+                               &dw1000.pos.x,
+                               &dw1000.pos.y,
+                               &dw1000.pos.z);
+}
+
+static void send_uwb_status(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_UWB_STATUS(trans, dev, AC_ID,
+                               &dw_status);
+}
+
 void dw1000_reset_heading_ref(void)
 {
   // store current heading as ref and stop periodic call
@@ -261,6 +279,8 @@ void dw1000_arduino_init()
   trilateration_init(dw1000.anchors);
 
   register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_ANCHOR_RANGE, send_anchor_range) ;
+  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_TAG_POSITION, send_tag_position) ;
+  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_UWB_STATUS, send_uwb_status)     ;
 }
 
 void dw1000_arduino_periodic()

@@ -170,8 +170,8 @@
 
   <section name="DW1000" prefix="DW1000_">
     <define name="ANCHORS_IDS" value="1, 2, 3" type="int[]" description="Comma separated list of anchors ID"/>
-    <define name="ANCHORS_POS_X" value="0., 0., 5." type="float[]" description="Comma separated list of anchors ID over X axis"/>
-    <define name="ANCHORS_POS_Y" value="0., 5., 0." type="float[]" description="Comma separated list of anchors ID over Y axis"/>
+    <define name="ANCHORS_POS_X" value="0., 0., 1." type="float[]" description="Comma separated list of anchors ID over X axis"/>
+    <define name="ANCHORS_POS_Y" value="0., 1., 0." type="float[]" description="Comma separated list of anchors ID over Y axis"/>
     <define name="ANCHORS_POS_Z" value="0., 0., 0." type="float[]" description="Comma separated list of anchors ID over Z axis"/>
     <define name="OFFSET" value="0., 0., 0." type="float[]" description="Position offset other X, Y and Z axis"/>
     <define name="SCALE" value="1., 1., 1." type="float[]" description="Position scale factor other X, Y and Z axis"/>
@@ -230,7 +230,7 @@
 	<define name="AHRS_PROPAGATE_LOW_PASS_RATES" value="TRUE"/>
     </module>
 
-    <module name="ins"/>
+    <module name="ins" type="hff"/>
 
     <module name="air_data">
       <define name="AIR_DATA_CALC_AMSL_BARO" value="TRUE"/>
