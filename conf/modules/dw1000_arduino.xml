@@ -22,6 +22,22 @@
       <define name="NB_ANCHORS" value="3" description="Set number of anchors, only 3 are required/supported at the moment"/>
     </section>
   </doc>
+  <settings>
+    <dl_settings>
+      <dl_settings NAME="UWB Trilateration">
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.initial_heading" min="0" max="360" step="0.1" shortname="heading_int" persistent="true"/> 
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[0].pos.x" min="-20" max="20" step="0.01" shortname="anchor1_x" persistent="true"/>     
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[0].pos.y" min="-20" max="20" step="0.01" shortname="anchor1_y" persistent="true"/> 
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[0].pos.z" min="-20" max="20" step="0.01" shortname="anchor1_z" persistent="true"/> 
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[1].pos.x" min="-20" max="20" step="0.01" shortname="anchor2_x" persistent="true"/> 
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[1].pos.y" min="-20" max="20" step="0.01" shortname="anchor2_y" persistent="true"/> 
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[1].pos.z" min="-20" max="20" step="0.01" shortname="anchor2_z" persistent="true"/>
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[2].pos.x" min="-20" max="20" step="0.01" shortname="anchor3_x" persistent="true"/> 
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[2].pos.y" min="-20" max="20" step="0.01" shortname="anchor3_y" persistent="true"/> 
+        <dl_setting module="decawave/dw1000_arduino" var="dw1000.anchors[2].pos.z" min="-20" max="20" step="0.01" shortname="anchor3_z" persistent="true"/>
+      </dl_settings>
+    </dl_settings>
+  </settings>
   <header>
     <file name="dw1000_arduino.h"/>
   </header>

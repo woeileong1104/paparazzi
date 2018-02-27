@@ -1,0 +1,314 @@
+<!-- This is a tailless FlowerFly Flapping Wing with Stroke Plane Modulation Control Mechanism equiped with Lisa/S 1.0 -->
+<!-- The Tailless FlowerFly frame comes with 2 brushless motors for thrust and roll, and 2 servos for pitch and yaw -->
+
+<!-- The motor and control servos configuration is the following:
+
+	    Top                     Top
+             ^                       ^
+             |                       |
+                                     RM (rightmotor)                               
+Y<  ____RM___oX___LM___     _________oY________  ->X
+   |         |         |   |         |         |
+   |  Right  |  Left   |   |  Back   |  Front  |
+    \ Wings  |  Wings /     \ Wings  |  Wings /
+     \_______|_______/       \_______|_______/   
+          RS|||LS (leftservo)        RS (rightservo)
+            |||                      |
+             |                       |
+         ____|____               ____|____
+             v                       v
+             Z                       Z
+      
+    The Lisa/S is sideway installed and aligned with body frame. Platform flies vertically-->
+
+<!--
+     Applicable configuration:
+     airframe="airframes/examples/ladybird_lisa_s.xml"
+     radio="radios/cockpitSX.xml"
+     telemetry="telemetry/default_rotorcraft.xml"
+     flight_plan="flight_plans/rotorcraft_basic.xml"
+     settings="settings/rotorcraft_basic.xml settings/control/rotorcraft_guidance.xml settings/control/stabilization_att_int.xml settings/control/stabilization_rate.xml"
+-->
+
+<airframe name="flowerfly_tailless_spm_lv"> <!--Stroke plane modualation-->
+
+  <servos driver="Pwm">
+    <servo name="leftmotor" no="0" min="1000" neutral="1000" max="2000"/> <!--Pad#3 on Lisa/-->
+    <servo name="rightmotor" no="1" min="1000" neutral="1000" max="2000"/> <!--Pad#4 on Lisa/-->
+    <!--servo name="rightservo" no="2" min="1495" neutral="1405" max="1260"/--> <!--Pad#5 on Lisa/-->
+    <!--servo name="leftservo" no="3" min="1550" neutral="1460" max="1305"/--> <!--Pad#6 on Lisa/-->
+    <servo name="leftservo" no="2" min="1850" neutral="1550" max="1200"/> <!--Pad#5 on Lisa/-->
+    <servo name="rightservo" no="3" min="1850" neutral="1550" max="1200"/> <!--Pad#6 on Lisa/-->
+  </servos>
+
+  <commands>
+    <axis name="PITCH" failsafe_value="0"/>
+    <axis name="ROLL" failsafe_value="0"/>
+    <axis name="YAW" failsafe_value="0"/>
+    <axis name="THRUST" failsafe_value="0"/>
+  </commands>
+
+  <command_laws>   
+    <set servo="leftmotor" value="@ROLL >= 0 ? @THRUST+0.7*@ROLL : @THRUST"/> 
+    <set servo="rightmotor" value="@ROLL <= 0 ? @THRUST-0.7*@ROLL : @THRUST"/> 
+    <set servo="leftservo" value="@PITCH-@YAW"/>
+    <set servo="rightservo" value="-@PITCH-@YAW"/>
+  </command_laws>
+
+
+  <!--define name="USE_BAROMETER" value="TRUE"/-->
+  
+  <section name="IMU" prefix="IMU_">
+    <!--define name="BODY_TO_IMU_PHI" value="0" unit="deg"/-->
+    <define name="BODY_TO_IMU_PHI" value="0" unit="deg"/>
+    <define name="BODY_TO_IMU_THETA" value="-90." unit="deg"/>
+    <define name="BODY_TO_IMU_PSI" value="-90" unit="deg"/>
+    <!--define name="BODY_TO_IMU_PSI" value="90" unit="deg"/-->
+
+    <!--IMU ACCEL calibration @ NUS-->
+    <!--define name="ACCEL_X_NEUTRAL" value="27"/>
+    <define name="ACCEL_Y_NEUTRAL" value="8"/>
+    <define name="ACCEL_Z_NEUTRAL" value="-174"/>
+    <define name="ACCEL_X_SENS" value="4.91616288282" integer="16"/>
+    <define name="ACCEL_Y_SENS" value="4.88618831127" integer="16"/>
+    <define name="ACCEL_Z_SENS" value="4.88474523106" integer="16"/-->
+
+    <define name="ACCEL_X_NEUTRAL" value="15"/>
+    <define name="ACCEL_Y_NEUTRAL" value="-2"/>
+    <define name="ACCEL_Z_NEUTRAL" value="-36"/>
+    <define name="ACCEL_X_SENS" value="4.92358042948" integer="16"/>
+    <define name="ACCEL_Y_SENS" value="4.86404174674" integer="16"/>
+    <define name="ACCEL_Z_SENS" value="4.88971632983" integer="16"/>
+
+
+    <!-- MAGNETO CALIBRATION @ NUS -->
+    <define name="MAG_X_NEUTRAL" value="79"/>
+    <define name="MAG_Y_NEUTRAL" value="-217"/>
+    <define name="MAG_Z_NEUTRAL" value="-95"/>
+    <define name="MAG_X_SENS" value="3.69493568788" integer="16"/>
+    <define name="MAG_Y_SENS" value="3.95838211592" integer="16"/>
+    <define name="MAG_Z_SENS" value="4.20506427457" integer="16"/>
+  
+
+    <!-- MAGNETO CALIBRATION DELFT
+    <define name="MAG_X_NEUTRAL" value="286"/>
+    <define name="MAG_Y_NEUTRAL" value="-72"/>
+    <define name="MAG_Z_NEUTRAL" value="97"/>
+    <define name="MAG_X_SENS" value="3.94431833863" integer="16"/>
+    <define name="MAG_Y_SENS" value="4.14629702271" integer="16"/>
+    <define name="MAG_Z_SENS" value="4.54518768636" integer="16"/-->
+
+    <!-- MAGNETO CURRENT CALIBRATION -->
+    <define name="MAG_X_CURRENT_COEF" value="0.0103422023767"/>
+    <define name="MAG_Y_CURRENT_COEF" value="0.0084568317783"/>
+    <define name="MAG_Z_CURRENT_COEF" value="-0.01935617335"/>
+  </section>
+
+ <section name="AUTOPILOT">
+   <define name="MODE_STARTUP" value="AP_MODE_RC_DIRECT"/>
+   <define name="MODE_MANUAL" value="AP_MODE_RC_DIRECT"/>
+   <define name="MODE_AUTO1" value="AP_MODE_ATTITUDE_DIRECT"/>
+   <define name="MODE_AUTO2" value="AP_MODE_ATTITUDE_DIRECT"/>
+   <!--define name="MODE_AUTO2" value="AP_MODE_NAV"/-->
+ </section>
+
+ <section name="BAT">
+   <define name="MILLIAMP_AT_FULL_THROTTLE" value="12000"/>
+   <define name="CATASTROPHIC_BAT_LEVEL" value="3.0" unit="V"/>
+   <define name="CRITIC_BAT_LEVEL" value="3.3" unit="V"/>
+    <define name="LOW_BAT_LEVEL" value="3.4" unit="V"/>
+    <define name="MAX_BAT_LEVEL" value="4.2" unit="V"/>
+ </section>
+
+  <section name="STABILIZATION_RATE" prefix="STABILIZATION_RATE_">
+    <define name="SP_MAX_P" value="180" unit="deg/s"/>
+    <define name="SP_MAX_Q" value="180" unit="deg/s"/>
+    <define name="SP_MAX_R" value="90" unit="deg/s"/>
+
+    <define name="GAIN_P" value="400"/>
+    <define name="GAIN_Q" value="400"/>
+    <define name="GAIN_R" value="418"/>
+
+    <define name="IGAIN_P" value="301"/>
+    <define name="IGAIN_Q" value="302"/>
+    <define name="IGAIN_R" value="303"/>
+  </section>
+
+
+  <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
+
+  <!--  SP_MAX_*: maximum PHI/THETA (roll/pitch) angles and maximum angular velocity R around yaw axis
+        DEADBAND_*: RC stick deadband around the center for A,E,R (roll,pitch,yaw)
+        REF_*: parameters for the reference generator
+        REF_OMEGA_*: second order model natural frequency for respective axis
+        REF_ZETA_*: second order model damping factor for respective axis
+        REF_MAX_x : bound on ref model angular speed
+        REF_MAX_xDOT : bound on ref model angular acceleration
+       [PHI|THETA|PSI]_[PID]GAIN: gains for the feedback control of the respective axis
+       [PHI|THETA|PSI]_DDGAIN: feedforward gains for the respective axis
+   -->
+
+    <!-- setpoints -->
+    <define name="SP_MAX_PHI" value="60." unit="deg"/> <!--Roll-->
+    <define name="SP_MAX_THETA" value="60." unit="deg"/> <!--Pitch-->
+    <define name="SP_MAX_PSI" value="90." unit="deg"/> <!--Yaw-->
+    <define name="SP_MAX_R" value="180." unit="deg/s"/> <!--Yaw-->
+    <define name="SP_MAX_P" value="180." unit="deg/s"/> <!--Roll-->
+    <!--define name="DEADBAND_A" value="250"/--> <!--Roll-->
+    <!--define name="DEADBAND_E" value="250"/--> <!--Pitch-->
+    <define name="DEADBAND_R" value="250"/> <!--Yaw-->
+
+    <!-- reference -->
+    <define name="REF_OMEGA_P" value="800" unit="deg/s"/>
+    <define name="REF_ZETA_P" value="0.85"/>
+    <define name="REF_MAX_P" value="300." unit="deg/s"/>
+    <define name="REF_MAX_PDOT" value="RadOfDeg(7000.)"/>
+
+    <define name="REF_OMEGA_Q" value="800" unit="deg/s"/>
+    <define name="REF_ZETA_Q" value="0.85"/>
+    <define name="REF_MAX_Q" value="300." unit="deg/s"/>
+    <define name="REF_MAX_QDOT" value="RadOfDeg(7000.)"/>
+
+    <define name="REF_OMEGA_R" value="500" unit="deg/s"/>
+    <define name="REF_ZETA_R" value="0.85"/>
+    <define name="REF_MAX_R" value="180." unit="deg/s"/>
+    <define name="REF_MAX_RDOT" value="RadOfDeg(1800.)"/>
+
+
+
+    <define name="PHI_PGAIN" value="1250"/> 
+    <define name="PHI_DGAIN" value="650"/> 
+    <define name="PHI_IGAIN" value="0"/> <!--31 Mar 2017-->
+
+    <define name="THETA_PGAIN" value="1900"/> <!--3600/3050/2950/2750/2700/2650/2600/2500/2450/2100/1900/1800-->
+    <define name="THETA_DGAIN" value="900"/> <!--1570/1350/1300/1000/850--->
+    <define name="THETA_IGAIN" value="0"/> <!--31 Mar 2017-->
+
+    <define name="PSI_PGAIN" value="1000"/>
+    <define name="PSI_DGAIN" value="500"/>
+    <define name="PSI_IGAIN" value="0"/>
+
+    <!-- feedforward -->
+    <define name="PHI_DDGAIN" value="100"/>
+    <define name="THETA_DDGAIN" value="50"/>
+    <define name="PSI_DDGAIN" value="50"/>
+
+    <define name="PHI_AGAIN" value="0"/>
+    <define name="THETA_AGAIN" value="0"/>
+    <define name="PSI_AGAIN" value="0"/>
+ </section>
+
+  <section name="INS" prefix="INS_">
+  </section>
+
+ <section name="GUIDANCE_V" prefix="GUIDANCE_V_">
+   <define name="HOVER_KP" value="276"/>
+   <define name="HOVER_KD" value="455"/>
+   <define name="HOVER_KI" value="100"/>
+   <define name="GUIDANCE_V_NOMINAL_HOVER_THROTTLE" value="0.6"/>
+  </section>
+
+  <section name="AHRS" prefix="AHRS_">
+    <define name="H_X" value=" 0.47577"/>
+    <define name="H_Y" value=" 0.11811"/>
+    <define name="H_Z" value=" 0.87161"/>
+  </section>
+
+ <section name="GUIDANCE_H" prefix="GUIDANCE_H_">
+   <define name="PGAIN" value="39"/>
+   <define name="DGAIN" value="50"/>
+   <define name="IGAIN" value="19"/>
+ </section>
+
+ <!--section name="SIMULATOR" prefix="NPS_">
+   <define name="ACTUATOR_NAMES" value="ne_motor, se_motor, sw_motor, nw_motor" type="string[]"/>
+   <define name="JSBSIM_MODEL" value="simple_x_quad_ccw" type="string"/>
+   <define name="SENSORS_PARAMS" value="nps_sensors_params_default.h" type="string"/>
+ </section -->
+
+ <section name="DW1000" prefix="DW1000_">
+   <define name="ANCHORS_IDS" value="1, 2, 3" type="int[]" description="Comma separated list of anchors ID"/>
+   <define name="ANCHORS_POS_X" value="0., 0., 2.1" type="float[]" description="Comma separated list of anchors ID over X axis"/>
+   <define name="ANCHORS_POS_Y" value="0., -2.38, 0." type="float[]" description="Comma separated list of anchors ID over Y axis"/>
+   <define name="ANCHORS_POS_Z" value="0., 0., 0." type="float[]" description="Comma separated list of anchors ID over Z axis"/>
+   <define name="OFFSET" value="0., 0., 0." type="float[]" description="Position offset other X, Y and Z axis"/>
+   <define name="SCALE" value="1., 1., 1." type="float[]" description="Position scale factor other X, Y and Z axis"/>
+   <define name="INITIAL_HEADING" value="64." description="Initial heading correction between anchors frame and global frame"/>
+   <define name="NB_ANCHORS" value="3" description="Set number of anchors, only 3 are required/supported at the moment"/>
+ </section>
+
+ <modules main_freq="512">
+   <load name="gps_ubx_ucenter.xml"/>
+   <load name="send_imu_mag_current.xml"/>
+ </modules>
+
+<!-- RPM Sensor -->
+<modules name = "pwm_meas"/>
+<modules name = "rpm_sensor"/>
+ <!--define name = "RPM_PWM_CHANNEL" value = "USE_PWM_INPUT1"/-->
+<!--/module-->
+<!-- RPM Sensor -->
+
+  <firmware name="rotorcraft">
+    <target name="ap" board="lisa_s_1.0">
+      <module name="radio_control" type="superbitrf_rc">
+	<define name="RADIO_MODE" value="RADIO_GEAR"/>
+        <define name="RADIO_AUTO_MODE" value="RADIO_FLAP"/>
+        <!--<define name="RADIO_KILL_SWITCH" value="RADIO_FLAP"/>-->
+      </module>
+      <configure name="AHRS_PROPAGATE_FREQUENCY" value="500"/>
+      <define name="USE_PERSISTENT_SETTINGS" value="TRUE"/>
+    </target>
+    <!--target name="nps" board="pc">
+      <module name="fdm" type="jsbsim"/>
+      <module name="radio_control" type="ppm"/>
+    </target-->
+    <module name="actuators" type="pwm">
+      <define name="SERVO_HZ" value="50"/>
+      <define name="USE_SERVOS_1AND2"/>
+    </module>
+    <module name="telemetry" type="superbitrf"/>
+    <!-- Comment the previous line and uncomment the following one if you need
+         to use the debug serial interface for telemetry. -->
+    <!--module name="telemetry" type="transparent"/-->
+    <module name="imu" type="lisa_s_v1.0">
+      <!--define name="LISA_S_UPSIDE_DOWN"/--> <!-- Upside down is a relative term. :) -->
+    </module>
+    <module name="gps" type="ublox"/> 
+    <module name="stabilization" type="int_euler"/>
+    <define name="STABILIZATION_ATTITUDE_SP_PSI_DELTA_LIMIT" value="1.57"/>
+    <module name="ahrs" type="int_cmpl_quat">
+        <!--configure name="USE_MAGNETOMETER" value="FALSE"/>
+        <define name="AHRS_USE_GPS_HEADING" value="TRUE"/-->
+ 	<define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="0"/>
+	<define name="AHRS_PROPAGATE_LOW_PASS_RATES" value="TRUE"/>
+        <!--define name="AHRS_ACCEL_OMEGA" value="3.15"/--> <!-- average for 2 second-->
+        <!--AHRS_PROPAGATE_FREQUENCY: IMU gyrometer reading frequency ( Hz, depend on IMU subsystem used and its configuration)
+            AHRS_CORRECT_FREQUENCY: IMU accelerometer reading frequency (Hz)
+            AHRS_MAG_CORRECT_FREQUENCY: IMU magnetometer reading frequency (Hz)        
+            AHRS_ACCEL_OMEGA: Complementary filter accelerometer cut-off frequency (rd/s). 
+            Default is 0.063 rd/s, the accelerometer reading are "averaged" over 100 seconds (= 2*pi/0.063) to correct gyro bias. 
+            Lower the cut-off frequency reduce the influence of accelerometers. 
+            WARNING: if ACCEL_OMEGA is set at a lower frequency, the gyro bias variations may not be corrected fast enough. 
+            As a result, the computed attitude may show significant static (or low frequency) errors. 
+            If accel_omega is set higher, the gyro bias will be well corrected and the static accuracy of the computed angle will be very good, but the dynamic error of the computed angle may be bad.
+            AHRS_ACCEL_ZETA: Complementary filter accelerometer damping. Default is 0.9
+            AHRS_MAG_OMEGA:Complementary filter magnetometer cut-off frequency (rd/s). Default is 0.04 rd/s. Acts the same as accelerometer but on the yaw axis.
+            AHRS_MAG_ZETA:Complementary filter magnetometer damping. Default is 0.9
+            AHRS_GRAVITY_HEURISTIC_FACTOR: Default is 30. 
+            Reduce accelerometer cut-off frequency when the vehicle is accelerating: norm(ax,ay,az) ~ 9,81 m/s2.
+            WARNING: when the IMU is not well damped, the norm of accelerometers never equals to 9,81 m/s2. 
+            As a result, the GRAVITY_HEURISTIC_FACTOR will reduce the accelerometer bandwith even if the vehicle is not accelerating. 
+            Set AHRS_GRAVITY_HEURISTIC_FACTOR = 0 in case of vibrations. -->
+    </module>
+
+    <module name="ins"/>
+    <!--module name="ins" type="extended"/-->
+
+    <module name="dw1000_arduino">
+      <configure name="DW1000_ARDUINO_UART" value="UART1"/>
+      <configure name="DW1000_ARDUINO_BAUD" value="B115200"/>
+    </module>
+
+  </firmware>
+</airframe>

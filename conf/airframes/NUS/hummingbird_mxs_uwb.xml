@@ -34,13 +34,21 @@
     <define name="ACCEL_Y_NEUTRAL" value="0"/>
     <define name="ACCEL_Z_NEUTRAL" value="0"/>
 
+    <!-- MAGNETO CALIBRATION DELFT -->
+    <define name="MAG_X_NEUTRAL" value="286"/>
+    <define name="MAG_Y_NEUTRAL" value="-72"/>
+    <define name="MAG_Z_NEUTRAL" value="97"/>
+    <define name="MAG_X_SENS" value="3.94431833863" integer="16"/>
+    <define name="MAG_Y_SENS" value="4.14629702271" integer="16"/>
+    <define name="MAG_Z_SENS" value="4.54518768636" integer="16"/>
+
     <!-- MAGNETO CALIBRATION @ NUS -->
-    <define name="MAG_X_NEUTRAL" value="79"/>
+    <!--define name="MAG_X_NEUTRAL" value="79"/>
     <define name="MAG_Y_NEUTRAL" value="-217"/>
     <define name="MAG_Z_NEUTRAL" value="-95"/>
     <define name="MAG_X_SENS" value="3.69493568788" integer="16"/>
     <define name="MAG_Y_SENS" value="3.95838211592" integer="16"/>
-    <define name="MAG_Z_SENS" value="4.20506427457" integer="16"/>
+    <define name="MAG_Z_SENS" value="4.20506427457" integer="16"/-->
   
     <!-- MAGNETO CURRENT CALIBRATION -->
     <define name="MAG_X_CURRENT_COEF" value="0.0103422023767"/>
@@ -170,12 +178,12 @@
 
   <section name="DW1000" prefix="DW1000_">
     <define name="ANCHORS_IDS" value="1, 2, 3" type="int[]" description="Comma separated list of anchors ID"/>
-    <define name="ANCHORS_POS_X" value="0., 0., 1." type="float[]" description="Comma separated list of anchors ID over X axis"/>
-    <define name="ANCHORS_POS_Y" value="0., 1., 0." type="float[]" description="Comma separated list of anchors ID over Y axis"/>
+    <define name="ANCHORS_POS_X" value="0., 0., 2.1" type="float[]" description="Comma separated list of anchors ID over X axis"/>
+    <define name="ANCHORS_POS_Y" value="0., -2.38, 0." type="float[]" description="Comma separated list of anchors ID over Y axis"/>
     <define name="ANCHORS_POS_Z" value="0., 0., 0." type="float[]" description="Comma separated list of anchors ID over Z axis"/>
     <define name="OFFSET" value="0., 0., 0." type="float[]" description="Position offset other X, Y and Z axis"/>
     <define name="SCALE" value="1., 1., 1." type="float[]" description="Position scale factor other X, Y and Z axis"/>
-    <define name="INITIAL_HEADING" value="0." description="Initial heading correction between anchors frame and global frame"/>
+    <define name="INITIAL_HEADING" value="64." description="Initial heading correction between anchors frame and global frame"/>
     <define name="NB_ANCHORS" value="3" description="Set number of anchors, only 3 are required/supported at the moment"/>
   </section>
 
@@ -200,6 +208,7 @@
         <configure name="RADIO_CONTROL_PPM_PIN" value="SERVO6"/>    
       </module>
 
+      <configure name="AHRS_PROPAGATE_FREQUENCY" value="500"/>
       <define name="USE_PERSISTENT_SETTINGS" value="TRUE"/>
     </target>
 
@@ -230,7 +239,8 @@
 	<define name="AHRS_PROPAGATE_LOW_PASS_RATES" value="TRUE"/>
     </module>
 
-    <module name="ins" type="hff"/>
+    <!--module name="ins" type="hff"/-->
+    <module name="ins"/>
 
     <module name="air_data">
       <define name="AIR_DATA_CALC_AMSL_BARO" value="TRUE"/>

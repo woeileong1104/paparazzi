@@ -11,6 +11,17 @@
    gui_color="#ffffffffffff"
   />
   <aircraft
+   name="FlowrFlyTaillessLV_UWB"
+   ac_id="8"
+   airframe="airframes/NUS/flowerfly_tailless_uwb.xml"
+   radio="radios/cockpitSX.xml"
+   telemetry="telemetry/default_rotorcraft.xml"
+   flight_plan="flight_plans/NUS/rotorcraft_basic_NUS.xml"
+   settings="settings/rotorcraft_basic.xml settings/persistent_settings.xml"
+   settings_modules="modules/dw1000_arduino.xml modules/ahrs_int_cmpl_quat.xml modules/stabilization_int_euler.xml modules/nav_basic_rotorcraft.xml modules/guidance_rotorcraft.xml modules/gps.xml modules/imu_common.xml modules/radio_control_superbitrf_rc.xml modules/gps_ubx_ucenter.xml"
+   gui_color="#c3aa0000ffff"
+  />
+  <aircraft
    name="Hummingbird_MXS"
    ac_id="52"
    airframe="airframes/NUS/hummingbird_mxs.xml"
@@ -29,7 +40,7 @@
    telemetry="telemetry/NUS/rotorcraft_with_logger_NUS_UWB.xml"
    flight_plan="flight_plans/NUS/rotorcraft_basic_NUS.xml"
    settings="settings/rotorcraft_basic.xml"
-   settings_modules="modules/air_data.xml modules/ahrs_int_cmpl_quat.xml modules/stabilization_int_euler.xml modules/nav_basic_rotorcraft.xml modules/guidance_rotorcraft.xml modules/gps.xml modules/imu_common.xml modules/gps_ubx_ucenter.xml"
+   settings_modules="modules/dw1000_arduino.xml modules/air_data.xml modules/ahrs_int_cmpl_quat.xml modules/stabilization_int_euler.xml modules/nav_basic_rotorcraft.xml modules/guidance_rotorcraft.xml modules/gps.xml modules/imu_common.xml modules/gps_ubx_ucenter.xml"
    gui_color="blue"
   />
   <aircraft
