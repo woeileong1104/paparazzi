@@ -46,9 +46,9 @@
      No. on Lisa/S board = 3 | 4 | 5 | 6 | 1 | 2 
 -->
     <servo name="motorR" no="0" min="1000" neutral="1000" max="2000"/>    
-    <servo name="servoR" no="1" min="1000" neutral="1500" max="2000"/>
+    <servo name="servoR" no="1" min="2000" neutral="1500" max="1000"/>
     <servo name="motorL" no="2" min="1000" neutral="1000" max="2000"/> 
-    <servo name="servoL" no="4" min="1000" neutral="1500" max="2000"/>
+    <servo name="servoL" no="4" min="2000" neutral="1400" max="1000"/>
     <!--servo name="servoR" no="1" min="1000" neutral="1500" max="2000"/-->
     <!--servo name="servoL" no="4" min="1000" neutral="1500" max="2000"/-->
   </servos>
@@ -64,8 +64,8 @@
     <!--call fun="motor_mixing_run(autopilot_motors_on,FALSE,values)"/-->
     <!--set servo="motorR" value="@THRUST" />
     <set servo="motorL" value="@THRUST" /-->    
-    <set servo="motorR" value="@ROLL <= 0 ? 0.9*@THRUST-0.5*@ROLL : 0.9*@THRUST"/> 
-    <set servo="motorL" value="@ROLL >= 0 ?     @THRUST+0.5*@ROLL :     @THRUST"/> 
+    <set servo="motorR" value="@ROLL <= 0 ? 0.91*(@THRUST-0.7*@ROLL):0.91*@THRUST"/> 
+    <set servo="motorL" value="@ROLL >= 0 ? @THRUST+0.7*@ROLL:@THRUST"/> 
     <!--set servo="motorR" value="@THRUST      - @ROLL*0.2" /-->
     <!--set servo="motorL" value="@THRUST*1.25 + @ROLL*0.2" /--> 
     <set servo="servoL" value="@PITCH  - @YAW"  />
@@ -141,9 +141,9 @@
   <section name="STABILIZATION_ATTITUDE" prefix="STABILIZATION_ATTITUDE_">
 
     <!-- setpoints -->
-    <define name="SP_MAX_PHI"   value="20."  unit="deg"  />
-    <define name="SP_MAX_THETA" value="20."  unit="deg"  />
-    <define name="SP_MAX_PSI"   value="20." unit="deg"  />
+    <define name="SP_MAX_PHI"   value="45."  unit="deg"  />
+    <define name="SP_MAX_THETA" value="45."  unit="deg"  />
+    <define name="SP_MAX_PSI"   value="90." unit="deg"  />
     <define name="SP_MAX_R"     value="90."  unit="deg/s"/>
     <define name="SP_MAX_P"     value="90."  unit="deg/s"/>
     <define name="DEADBAND_R"   value="250"              />
@@ -244,7 +244,7 @@
 
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="500"/>    
 
-      <define name="USE_PERSISTENT_SETTINGS" value="FALSE"/>        
+      <define name="USE_PERSISTENT_SETTINGS" value="TRUE"/>        
     </target>
 
     <module name="actuators" type="pwm">
@@ -261,7 +261,8 @@
 
     <module name="gps" type="ublox"/>
 
-    <module name="stabilization" type="int_quat"/>
+    <!--module name="stabilization" type="int_quat"/-->
+    <module name="stabilization" type="int_euler"/>
 
     <module name="ahrs" type="int_cmpl_quat">
       <define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="0"/>
