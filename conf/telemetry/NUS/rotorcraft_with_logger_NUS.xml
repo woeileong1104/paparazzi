@@ -91,12 +91,13 @@
     </mode>
 
     <mode name="attitude_loop" key_press="a">
-      <message name="ROTORCRAFT_STATUS" period="1.2"/>
-      <message name="DL_VALUE"          period="0.5"/>
-      <message name="ALIVE"             period="0.9"/>
+      <message name="ROTORCRAFT_STATUS"     period="1.2"/>
+      <message name="DL_VALUE"              period="0.5"/>
+      <message name="ALIVE"                 period="0.9"/>
       <message name="STAB_ATTITUDE_INT"     period=".03"/>
       <message name="STAB_ATTITUDE_REF_INT" period=".03"/>
-      <message name="STAB_ATTITUDE_INDI"     period=".25"/>
+      <message name="STAB_ATTITUDE_INDI"    period=".25"/>
+      <message name="ROTORCRAFT_CMD"        period=".03"/> 
     </mode>
 
     <mode name="vert_loop" key_press="v">
@@ -149,13 +150,14 @@
   </process>
   <process name="Logger">
     <mode name="default">
-      <!--message name="STAB_ATTITUDE_REF_INT"  period=".02"/-->
-      <!--message name="ROTORCRAFT_CMD"         period=".02"/--> 
-      <message name="IMU_GYRO_SCALED"        period=".01"/>
-      <message name="IMU_ACCEL_SCALED"       period=".01"/>
+      <message name="STAB_ATTITUDE_REF_INT"  period=".02"/>
+      <message name="STAB_ATTITUDE_INT"      period=".02"/>
+      <message name="ROTORCRAFT_CMD"         period=".02"/> 
+      <!--message name="IMU_GYRO_SCALED"        period=".01"/-->
+      <!--message name="IMU_ACCEL_SCALED"       period=".01"/-->
       <!--message name="IMU_MAG_SCALED"         period=".1"/-->
       <!--message name="AHRS_GYRO_BIAS_INT"     period=".02"/-->
-      <message name="AHRS_EULER_INT"         period=".01"/>
+      <!--message name="AHRS_EULER_INT"         period=".01"/-->
       <!--message name="BARO_RAW"               period=".1"/-->
     </mode>
   </process>

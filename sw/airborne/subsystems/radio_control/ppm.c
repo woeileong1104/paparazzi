@@ -59,9 +59,22 @@ static void send_ppm(struct transport_tx *trans, struct link_device *dev)
     ppm_pulses_usec[i] = USEC_OF_RC_PPM_TICKS(ppm_pulses[i]);
   }
   pprz_msg_send_PPM(trans, dev, AC_ID,
-                    &radio_control.frame_rate, RADIO_CTL_NB, ppm_pulses_usec);
+                    &radio_control.status, &radio_control.time_since_last_frame, &radio_control.radio_ok_cpt, &radio_control.frame_rate, &radio_control.frame_cpt, RADIO_CTL_NB, ppm_pulses_usec);
+  //pprz_msg_send_PPM(trans, dev, AC_ID,
+  //                  &radio_control.frame_rate, RADIO_CTL_NB, ppm_pulses_usec);
 }
 #endif
+
+/*
+struct RadioControl {
+  uint8_t status;
+  uint8_t time_since_last_frame;
+  uint8_t radio_ok_cpt;
+  uint8_t frame_rate;
+  uint8_t frame_cpt;
+  pprz_t  values[RADIO_CONTROL_NB_CHANNEL];
+};
+*/
 
 void radio_control_impl_init(void)
 {

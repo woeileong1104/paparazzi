@@ -58,9 +58,9 @@
 
  <section name="AUTOPILOT">
    <define name="MODE_STARTUP" value="AP_MODE_RC_DIRECT"/>
-   <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
-   <define name="MODE_AUTO1" value="AP_MODE_HOVER_Z_HOLD"/>
-   <define name="MODE_AUTO2" value="AP_MODE_NAV"/>
+   <define name="MODE_MANUAL" value="AP_MODE_RC_DIRECT"/>
+   <define name="MODE_AUTO1" value="AP_MODE_ATTITUDE_DIRECT"/>
+   <define name="MODE_AUTO2" value="AP_MODE_ATTITUDE_DIRECT"/>
    <!--define name="MODE_AUTO2" value="AP_MODE_NAV"/-->
  </section>
 
@@ -190,11 +190,15 @@
  <modules main_freq="512">
    <load name="gps_ubx_ucenter.xml"/>
    <load name="send_imu_mag_current.xml"/>
+   <module name="logger_sd_spi_direct">
+      <define name="SDLOGGER_ON_ARM" value="TRUE"/>
+      <define name="SDLOGGER_DIRECT_SPI" value="SPI1"/>
+    </module>
  </modules>
 
  <!-- RPM Sensor -->
- <modules name = "pwm_meas"/>
- <modules name = "rpm_sensor"/>
+ <!--modules name = "pwm_meas"/>
+ <modules name = "rpm_sensor"/-->
  <!--define name = "RPM_PWM_CHANNEL" value = "USE_PWM_INPUT1"/-->
  <!--/module-->
  <!-- RPM Sensor -->
@@ -205,7 +209,7 @@
       <define name="REMAP_UART3" value="TRUE" />
 
       <module name="radio_control" type="ppm">
-        <configure name="RADIO_CONTROL_PPM_PIN" value="SERVO6"/>    
+        <!--configure name="RADIO_CONTROL_PPM_PIN" value="SERVO6"/-->  
       </module>
 
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="500"/>
@@ -223,6 +227,8 @@
 
     <module name="imu" type="lisa_mx_v2.1"/>
     
+    <!--module name="gps" type="ublox"/--> 
+
     <module name="gps" type="ublox">
       <configure name="GPS_PORT" value="UART2"/>
       <configure name="GPS_BAUD" value="B38400"/>

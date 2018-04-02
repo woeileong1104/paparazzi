@@ -281,7 +281,7 @@ void stabilization_attitude_run(bool  in_flight)
   stabilization_cmd[COMMAND_ROLL] =
     OFFSET_AND_ROUND((stabilization_att_fb_cmd[COMMAND_ROLL] + stabilization_att_ff_cmd[COMMAND_ROLL]), 8); //was 11
 
-  stabilization_cmd[COMMAND_PITCH] =
+  stabilization_cmd[COMMAND_PITCH] = 
     OFFSET_AND_ROUND((stabilization_att_fb_cmd[COMMAND_PITCH] + stabilization_att_ff_cmd[COMMAND_PITCH]), 8); //was 11
 
   stabilization_cmd[COMMAND_YAW] =
