@@ -49,6 +49,19 @@ extern void radio_control_impl_init(void);
 #define RC_LOST        1
 #define RC_REALLY_LOST 2
 
+/*
+struct RadioControl {
+  uint8_t status;
+  uint8_t time_since_last_frame;
+  uint8_t radio_ok_cpt;
+  uint8_t frame_rate;
+  uint8_t frame_cpt;
+  uint32_t last_pulse_time;
+  uint8_t aux1;
+  uint8_t aux2;
+  pprz_t  values[RADIO_CONTROL_NB_CHANNEL];
+};*/
+
 struct RadioControl {
   uint8_t status;
   uint8_t time_since_last_frame;

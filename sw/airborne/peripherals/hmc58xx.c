@@ -126,7 +126,7 @@ static void hmc58xx_send_config(struct Hmc58xx *hmc)
 void hmc58xx_start_configure(struct Hmc58xx *hmc)
 {
   // wait before starting the configuration
-  // doing to early may void the mode configuration
+  // doing too early may void the mode configuration
   if (hmc->init_status == HMC_CONF_UNINIT && get_sys_time_float() > HMC58XX_STARTUP_DELAY) {
     hmc->init_status++;
     if (hmc->i2c_trans.status == I2CTransSuccess || hmc->i2c_trans.status == I2CTransDone) {

@@ -30,6 +30,7 @@
 #include "pprzlink/messages.h"
 #include "subsystems/datalink/downlink.h"
 #include "generated/airframe.h"
+#include "subsystems/datalink/telemetry.h" // added for telemetry 20180405
 
 #ifndef HMC58XX_CHAN_X
 #define HMC58XX_CHAN_X 0
@@ -64,10 +65,31 @@ static struct Int32RMat mag_to_imu; ///< rotation from mag to imu frame
 
 struct Hmc58xx mag_hmc58xx;
 
+static void send_hmc58xx(struct transport_tx *trans, struct link_device *dev)
+{
+  pprz_msg_send_HMC58XX(trans, dev, AC_ID,
+                        &mag_hmc58xx.initialized,
+                        &mag_hmc58xx.init_status,
+                        &mag_hmc58xx.i2c_trans.type,
+                        &mag_hmc58xx.i2c_trans.slave_addr,
+                        &mag_hmc58xx.i2c_trans.len_r,
+                        &mag_hmc58xx.i2c_trans.len_w,
+                        &mag_hmc58xx.i2c_trans.buf[0],
+                        &mag_hmc58xx.i2c_trans.buf[1],
+                        &mag_hmc58xx.i2c_trans.buf[2],
+                        &mag_hmc58xx.i2c_trans.buf[3],
+                        &mag_hmc58xx.i2c_trans.buf[4],
+                        &mag_hmc58xx.i2c_trans.buf[5],
+                        &mag_hmc58xx.i2c_trans.status,
+                        &mag_hmc58xx.data.value[0],
+                        &mag_hmc58xx.data.value[1],
+                        &mag_hmc58xx.data.value[2]);
+}
+
 void mag_hmc58xx_module_init(void)
 {
   hmc58xx_init(&mag_hmc58xx, &(MAG_HMC58XX_I2C_DEV), HMC58XX_ADDR);
-
+  
 #if MODULE_HMC58XX_UPDATE_AHRS && USE_MAG_TO_IMU
   struct Int32Eulers mag_to_imu_eulers = {
     ANGLE_BFP_OF_REAL(HMC58XX_MAG_TO_IMU_PHI),
@@ -76,6 +98,8 @@ void mag_hmc58xx_module_init(void)
   };
   int32_rmat_of_eulers(&mag_to_imu, &mag_to_imu_eulers);
 #endif
+
+  register_periodic_telemetry(DefaultPeriodic, PPRZ_MSG_ID_HMC58XX, send_hmc58xx) ;
 }
 
 void mag_hmc58xx_module_periodic(void)

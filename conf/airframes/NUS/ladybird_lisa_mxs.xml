@@ -25,12 +25,12 @@
 -->
 
 <airframe name="quadrotor_lisa_mxs">
-
+ 
   <servos driver="Pwm">
-    <servo name="NE" no="0" min="0" neutral="50" max="1000"/>
-    <servo name="SE" no="5" min="0" neutral="50" max="1000"/>
-    <servo name="SW" no="4" min="0" neutral="50" max="1000"/>
-    <servo name="NW" no="1" min="0" neutral="50" max="1000"/>
+    <servo name="SW" no="3" min="1000" neutral="1020" max="1900"/>
+    <servo name="NW" no="2" min="1000" neutral="1020" max="1900"/>
+    <servo name="NE" no="1" min="1000" neutral="1020" max="1900"/>
+    <servo name="SE" no="0" min="1000" neutral="1020" max="1900"/>
   </servos>
 
   <commands>
@@ -40,15 +40,37 @@
     <axis name="THRUST" failsafe_value="0"/>
   </commands>
 
-  <command_laws>
+  <!--command_laws>   
+    <set servo="SW" value="@ROLL"/>
+    <set servo="NW" value="@PITCH"/>
+    <set servo="NE" value="@YAW"/> 
+    <set servo="SE" value="@THRUST"/> 
+  </command_laws-->
+
+  <!--command_laws>   
+    <set servo="NE" value="@THRUST-@ROLL+@PITCH+@YAW"/> 
+    <set servo="SE" value="@THRUST-@ROLL-@PITCH-@YAW"/> 
+    <set servo="SW" value="@THRUST+@ROLL-@PITCH+@YAW"/>
+    <set servo="NW" value="@THRUST+@ROLL+@PITCH-@YAW"/>
+  </command_laws-->
+
+  <!--command_laws>
     <call fun="motor_mixing_run(autopilot_get_motors_on(),FALSE,values)"/>
     <set servo="NE" value="motor_mixing.commands[0]"/>
     <set servo="SE" value="motor_mixing.commands[1]"/>
     <set servo="SW" value="motor_mixing.commands[2]"/>
     <set servo="NW" value="motor_mixing.commands[3]"/>
+  </command_laws-->
+
+  <command_laws>
+    <call fun="motor_mixing_run(autopilot_get_motors_on(),FALSE,values)"/>
+    <set servo="NE" value="motor_mixing.commands[MOTOR_FRONT_RIGHT]"/>
+    <set servo="SE" value="motor_mixing.commands[MOTOR_BACK_RIGHT]"/>
+    <set servo="SW" value="motor_mixing.commands[MOTOR_BACK_LEFT]"/>
+    <set servo="NW" value="motor_mixing.commands[MOTOR_FRONT_LEFT]"/>
   </command_laws>
 
-  <section name="MIXING" prefix="MOTOR_MIXING_">
+  <!--section name="MIXING" prefix="MOTOR_MIXING_">
     <define name="TRIM_ROLL" value="0"/>
     <define name="TRIM_PITCH" value="0"/>
     <define name="TRIM_YAW" value="0"/>
@@ -58,6 +80,13 @@
     <define name="PITCH_COEF" value="{  256, -256, -256,  256 }"/>
     <define name="YAW_COEF" value="{    256, -256,  256, -256 }"/>
     <define name="THRUST_COEF" value="{ 256,  256,  256,  256 }"/>
+  </section-->
+
+  <section name="MIXING" prefix="MOTOR_MIXING_">
+    <!--define name="TRIM_ROLL" value="0"/>
+    <define name="TRIM_PITCH" value="0"/>
+    <define name="TRIM_YAW" value="0"/-->
+    <define name="TYPE" value="QUAD_X"/>
   </section>
 
   <section name="IMU" prefix="IMU_">
@@ -84,10 +113,11 @@
   </section>
 
  <section name="AUTOPILOT">
-   <define name="MODE_STARTUP" value="AP_MODE_NAV"/>
-   <define name="MODE_MANUAL" value="AP_MODE_ATTITUDE_DIRECT"/>
-   <define name="MODE_AUTO1" value="AP_MODE_HOVER_Z_HOLD"/>
-   <define name="MODE_AUTO2" value="AP_MODE_NAV"/>
+   <define name="MODE_STARTUP" value="AP_MODE_RC_DIRECT"/>
+   <define name="MODE_MANUAL" value="AP_MODE_RC_DIRECT"/>
+   <!--define name="MODE_AUTO1" value="AP_MODE_HOVER_Z_HOLD"/-->
+   <define name="MODE_AUTO2" value="AP_MODE_ATTITUDE_DIRECT"/>
+   <define name="MODE_AUTO2" value="AP_MODE_ATTITUDE_DIRECT"/>
  </section>
 
  <section name="BAT">
@@ -127,22 +157,22 @@
     <define name="REF_MAX_RDOT" value="RadOfDeg(900.)"/>
 
     <!-- feedback -->
-    <define name="PHI_PGAIN" value="400"/>
-    <define name="PHI_DGAIN" value="200"/>
+    <define name="PHI_PGAIN" value="600"/>
+    <define name="PHI_DGAIN" value="50"/>
     <define name="PHI_IGAIN" value="100"/>
 
-    <define name="THETA_PGAIN" value="400"/>
-    <define name="THETA_DGAIN" value="200"/>
+    <define name="THETA_PGAIN" value="600"/>
+    <define name="THETA_DGAIN" value="50"/>
     <define name="THETA_IGAIN" value="100"/>
 
-    <define name="PSI_PGAIN" value="500"/>
-    <define name="PSI_DGAIN" value="300"/>
-    <define name="PSI_IGAIN" value="10"/>
+    <define name="PSI_PGAIN" value="300"/>
+    <define name="PSI_DGAIN" value="50"/>
+    <define name="PSI_IGAIN" value="100"/>
 
     <!-- feedforward -->
     <define name="PHI_DDGAIN" value="0"/>
     <define name="THETA_DDGAIN" value="0"/>
-    <define name="PSI_DDGAIN" value=" 300"/>
+    <define name="PSI_DDGAIN" value="0"/>
 
     <define name="PHI_AGAIN" value="0"/>
     <define name="THETA_AGAIN" value="0"/>
@@ -188,7 +218,7 @@
 
       <module name="radio_control" type="ppm">
         <!--configure name="RADIO_CONTROL_PPM_PIN" value="SUPERBIT_RST"/-->
-        <configure name="RADIO_CONTROL_PPM_PIN" value="UART1_RX"/>       
+        <!--configure name="RADIO_CONTROL_PPM_PIN" value="UART1_RX"/-->       
       </module>
 
       <!--module name="radio_control" type="datalink"/-->
@@ -197,7 +227,13 @@
       </module-->
 
       <configure name="AHRS_PROPAGATE_FREQUENCY" value="500"/>
+
       <define name="USE_PERSISTENT_SETTINGS" value="TRUE"/>
+
+      <!--define name="USE_PWM1" value="TRUE"/>
+      <define name="USE_PWM2" value="TRUE"/>
+      <define name="USE_PWM3" value="TRUE"/>
+      <define name="USE_PWM4" value="TRUE"/-->
     </target>
 
 
@@ -208,13 +244,14 @@
            If we went with the 500Hz that woul be the default we would be hearing a very annoying high pitched sound coming from the motors.
       -->
       <!-- Setting the PWM timer base frequency to 36MHz -->
-      <define name="PWM_BASE_FREQ" value="36000000"/>
+      <!--define name="PWM_BASE_FREQ" value="36000000"/-->
       <!-- Setting the PWM interval to 36KHz -->
-      <define name="SERVO_HZ" value="36000"/>
+      <define name="SERVO_HZ" value="50"/>
     </module>
 
     <module name="telemetry" type="transparent">
-      <configure name="MODEM_PORT" value="UART3"/>
+      <!--configure name="MODEM_PORT" value="UART3"/-->
+      <configure name="MODEM_PORT" value="UART1"/>
       <configure name="MODEM_BAUD" value="B115200"/>
     </module>
 
@@ -225,8 +262,22 @@
       <configure name="GPS_BAUD" value="B38400"/>
     </module>
 
-    <module name="stabilization" type="int_quat"/>
-    <module name="ahrs" type="int_cmpl_quat"/>
+    <module name="stabilization" type="int_euler">
+      <define name="FILTER_CMD_ROLL_PITCH" value="1"/>
+      <define name="FILTER_CMD_YAW" value="1"/>
+      <define name="FILTER_CMD_ROLL_CUTOFF" value="15.0"/>
+      <define name="FILTER_CMD_PITCH_CUTOFF" value="15.0"/>
+      <define name="FILTER_CMD_YAW_CUTOFF" value="10.0"/>
+      <define name="STABILIZATION_ATTITUDE_SP_PSI_DELTA_LIMIT" value="0.5"/>
+    </module> 
+
+    <module name="ahrs" type="int_cmpl_quat">
+        <!--configure name="USE_MAGNETOMETER" value="FALSE"/>
+        <define name="AHRS_USE_GPS_HEADING" value="TRUE"/-->
+ 	<define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="0"/>
+	<define name="AHRS_PROPAGATE_LOW_PASS_RATES" value="TRUE"/>
+    </module>
+
     <module name="ins"/>
 
     <module name="air_data">

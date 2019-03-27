@@ -144,6 +144,10 @@
       <message name="INS_REF"           period="5.1"/>
     </mode>
 
+    <mode name="external_sensors">
+      <message name="HMC58XX" period=".1"/>
+    </mode>
+
     <mode name="uwb_localization">
       <message name="ANCHOR_RANGE"      period="1.0"/>
       <message name="TAG_POSITION"      period="1.0"/>

@@ -58,10 +58,11 @@ static void send_ppm(struct transport_tx *trans, struct link_device *dev)
   for (int i = 0; i < RADIO_CTL_NB; i++) {
     ppm_pulses_usec[i] = USEC_OF_RC_PPM_TICKS(ppm_pulses[i]);
   }
+  /*pprz_msg_send_PPM(trans, dev, AC_ID,
+                    &radio_control.status, &radio_control.time_since_last_frame, &radio_control.radio_ok_cpt, &radio_control.frame_rate, &radio_control.frame_cpt, &radio_control.last_pulse_time, &radio_control.aux1, &radio_control.aux2, RADIO_CTL_NB, ppm_pulses_usec);
+*/
   pprz_msg_send_PPM(trans, dev, AC_ID,
-                    &radio_control.status, &radio_control.time_since_last_frame, &radio_control.radio_ok_cpt, &radio_control.frame_rate, &radio_control.frame_cpt, RADIO_CTL_NB, ppm_pulses_usec);
-  //pprz_msg_send_PPM(trans, dev, AC_ID,
-  //                  &radio_control.frame_rate, RADIO_CTL_NB, ppm_pulses_usec);
+                    &radio_control.frame_rate, RADIO_CTL_NB, ppm_pulses_usec);
 }
 #endif
 
@@ -82,6 +83,10 @@ void radio_control_impl_init(void)
   ppm_last_pulse_time = 0;
   ppm_cur_pulse = RADIO_CTL_NB;
   ppm_data_valid = false;
+
+  //radio_control.last_pulse_time = 0;
+  //radio_control.aux2 = ppm_cur_pulse;
+  //radio_control.aux1 = (uint8_t)ppm_data_valid;
 
   ppm_arch_init();
 
@@ -113,6 +118,7 @@ void ppm_decode_frame(uint32_t ppm_time)
 {
   uint32_t length = ppm_time - ppm_last_pulse_time;
   ppm_last_pulse_time = ppm_time;
+  //radio_control.last_pulse_time = length;
 
   ppm_decode_frame_width(length);
 }
@@ -132,22 +138,29 @@ void ppm_decode_frame_width(uint32_t ppm_width)
       if (ppm_data_valid && RssiValid()) {
         ppm_frame_available = true;
         ppm_data_valid = false;
+        //radio_control.aux1 = (uint8_t)ppm_data_valid;
       }
       ppm_cur_pulse = 0;
+      //radio_control.aux2 = ppm_cur_pulse;
     } else {
       ppm_data_valid = false;
+      //radio_control.aux1 = (uint8_t)ppm_data_valid;
     }
   } else {
     if (ppm_width > RC_PPM_TICKS_OF_USEC(PPM_DATA_MIN_LEN) &&
         ppm_width < RC_PPM_TICKS_OF_USEC(PPM_DATA_MAX_LEN)) {
       ppm_pulses[ppm_cur_pulse] = ppm_width;
       ppm_cur_pulse++;
+      //radio_control.aux2 = ppm_cur_pulse;
       if (ppm_cur_pulse == RADIO_CTL_NB) {
         ppm_data_valid = true;
+        //radio_control.aux1 = (uint8_t)ppm_data_valid;
       }
     } else {
       ppm_cur_pulse = RADIO_CTL_NB;
+      //radio_control.aux2 = ppm_cur_pulse;      
       ppm_data_valid = false;
+      //radio_control.aux1 = (uint8_t)ppm_data_valid;
     }
   }
 }

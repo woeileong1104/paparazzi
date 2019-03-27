@@ -206,6 +206,8 @@
   <firmware name="rotorcraft">
     <target name="ap" board="lisa_mxs_1.0">
     
+      <define name="USE_I2C1" />
+
       <define name="REMAP_UART3" value="TRUE" />
 
       <module name="radio_control" type="ppm">
@@ -225,7 +227,9 @@
       <configure name="MODEM_BAUD" value="B115200"/>
     </module>
 
-    <module name="imu" type="lisa_mx_v2.1"/>
+    <module name="imu" type="lisa_mx_v2.1">
+       <!--define name="AHRS_ICQ_MAG_ID" value="MAG_HMC58XX_SENDER_ID" /--> 
+    </module>
     
     <!--module name="gps" type="ublox"/--> 
 
@@ -238,15 +242,32 @@
 
     <define name="STABILIZATION_ATTITUDE_SP_PSI_DELTA_LIMIT" value="1.57"/>
 
+    <!--subsystem name="ahrs" type="float_cmpl_quat">
+         <define name="AHRS_XXX_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
+      </subsystem-->
+
     <module name="ahrs" type="int_cmpl_quat">
-        <!--configure name="USE_MAGNETOMETER" value="FALSE"/>
-        <define name="AHRS_USE_GPS_HEADING" value="TRUE"/-->
+        <configure name="USE_MAGNETOMETER" value="TRUE"/>
+        <define name="AHRS_USE_GPS_HEADING" value="FALSE"/>
  	<define name="AHRS_GRAVITY_HEURISTIC_FACTOR" value="0"/>
 	<define name="AHRS_PROPAGATE_LOW_PASS_RATES" value="TRUE"/>
+        <define name="AHRS_ICQ_MAG_ID" value="MAG_HMC58XX_SENDER_ID"/>
     </module>
 
     <!--module name="ins" type="hff"/-->
     <module name="ins"/>
+
+    <module name="mag" type="hmc58xx">
+      <configure name="MAG_HMC58XX_I2C_DEV" value="i2c1"/>
+      <!--define name="MODULE_HMC58XX_UPDATE_AHRS" value="TRUE"/-->
+      <!--define name="HMC58XX_CHAN_X" value="0"/>
+      <define name="HMC58XX_CHAN_Y" value="1"/>
+      <define name="HMC58XX_CHAN_Z" value="2"/-->
+
+      <define name="HMC58XX_CHAN_X_SIGN" value="+"/>
+      <define name="HMC58XX_CHAN_Y_SIGN" value="-"/>
+      <define name="HMC58XX_CHAN_Z_SIGN" value="-"/>
+    </module>
 
     <module name="air_data">
       <define name="AIR_DATA_CALC_AMSL_BARO" value="TRUE"/>
